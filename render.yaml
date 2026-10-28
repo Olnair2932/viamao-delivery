@@ -1,0 +1,57 @@
+services:
+  # API Spring Boot (Docker)
+  - type: web
+    name: viamao-delivery-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: viamao-postgres
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: viamao-postgres
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: viamao-postgres
+          property: password
+      - key: SPRING_DATA_REDIS_HOST
+        fromService:
+          type: redis
+          name: viamao-redis
+          property: host
+      - key: SPRING_DATA_REDIS_PORT
+        fromService:
+          type: redis
+          name: viamao-redis
+          property: port
+      # RabbitMQ via CloudAMQP (plano gratuito) - preencha após criar a conta
+      - key: SPRING_RABBITMQ_HOST
+        sync: false
+      - key: SPRING_RABBITMQ_PORT
+        value: 5672
+      - key: SPRING_RABBITMQ_USERNAME
+        sync: false
+      - key: SPRING_RABBITMQ_PASSWORD
+        sync: false
+
+  # Redis gerenciado
+  - type: redis
+    name: viamao-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru
+
+databases:
+  # PostgreSQL gerenciado (PostGIS habilitado via CREATE EXTENSION)
+  - name: viamao-postgres
+    databaseName: viamao_db
+    user: viamao_user
+    plan: free
+    postgresMajorVersion: "15"
