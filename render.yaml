@@ -11,9 +11,7 @@ services:
       - key: PORT
         value: 8080
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: viamao-postgres
-          property: connectionString
+        sync: false
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: viamao-postgres
