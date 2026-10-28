@@ -47,6 +47,7 @@ services:
     name: viamao-redis
     plan: free
     maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
 
 databases:
   # PostgreSQL gerenciado (PostGIS habilitado via CREATE EXTENSION)
