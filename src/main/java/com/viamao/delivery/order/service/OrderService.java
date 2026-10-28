@@ -25,7 +25,7 @@ public class OrderService {
         order.setCustomerName(req.getCustomerName());
         order.setDeliveryAddress(req.getDeliveryAddress());
         order.setTotalAmount(req.getTotalAmount());
-        order.setStatus(OrderStatus.CREATED);
+        order.setStatus(OrderStatus.CRIADO);
         return OrderResponse.from(repository.save(order));
     }
 
